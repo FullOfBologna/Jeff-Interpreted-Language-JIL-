@@ -20,15 +20,10 @@ void Lexy::setOverallTokenList(TokenList inputTokenList)
 
 bool Lexy::isStored(std::string varName)
 {
-	for (auto& varPair : m_storedVariables)
-	{
-		if (varName == varPair.first)
-		{
-			return true;
-		}
-	}
-
-	return false;
+	auto iterator = m_storedVariables.find(varName);
+	if (iterator == m_storedVariables.end())
+		return false;
+	return true;
 }
 
 void Lexy::storeVariable(std::string varName)
@@ -43,7 +38,17 @@ void Lexy::storeVariable(std::string varName)
 
 void Lexy::updateMapValue(std::string variableName, float variableValue)
 {
+	auto varPair = m_storedVariables.find(variableName);
 
+	varPair->second = variableValue;
+}
+
+void Lexy::printStoredVariables()
+{
+	for (auto varPair : m_storedVariables)
+	{
+		std::cout << "Name: " << varPair.first << ", Value: " << varPair.second << std::endl;
+	}
 }
 
 void Lexy::executeAnalyzedInstructions() {
@@ -83,7 +88,7 @@ void Lexy::executeAnalyzedInstructions() {
 			varStream >> variableFloat;
 
 			updateMapValue(variableName, variableFloat);
-
+			printStoredVariables();
 		}
 		else if (name == "NUMBER")
 		{
@@ -111,8 +116,8 @@ void Lexy::executeAnalyzedInstructions() {
 			std::stringstream lhsStream(lhsVal);
 			std::stringstream rhsStream(rhsVal);
 
-			int lhs;
-			int rhs;
+			float lhs;
+			float rhs;
 
 			lhsStream >> lhs;
 			rhsStream >> rhs;

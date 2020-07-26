@@ -47,11 +47,12 @@ void Meat::readFile()
 
 		for (auto& token : tokenList)
 		{
-			//std::cout << "Line: " << lineNumber << " ";
-			//printToken(token);
+			std::cout << "Line: " << lineNumber << " ";
+			printToken(token);
 		}
 
 		m_lexy.setOverallTokenList(tokenList);
+
 
 		//printASCII(readString);
 

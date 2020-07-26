@@ -35,6 +35,8 @@ private:
 	void storeVariable(std::string varName);
 	void updateMapValue(std::string, float);
 
+	void printStoredVariables();
+
 	/// <summary>
 	/// This will be the big one. The logic will admittedly get nasty before it can be refined. 
 	/// </summary>
