@@ -15,17 +15,19 @@ Tokenizer::~Tokenizer()
 Token Tokenizer::generateToken(std::string input)
 {
 	Token token;
-	if (isAlphaNumerical(input))
+	//Parse only number first, so it does not get stored as a variable
+
+	if (isNumber(input))
 	{
-	token = std::make_tuple(m_tokenLUT[0], input);
+		token = std::make_tuple(m_tokenLUT[2], input);
+	}
+	else if (isAlphaNumerical(input))
+	{
+		token = std::make_tuple(m_tokenLUT[0], input);
 	}
 	else if (input == "=")
 	{
 		token = std::make_tuple(m_tokenLUT[1], "=");
-	}
-	else if (isNumber(input))
-	{
-		token = std::make_tuple(m_tokenLUT[2], input);
 	}
 	else if (input == "+")
 	{
@@ -59,7 +61,7 @@ TokenNameArray Tokenizer::initializeTokenArray()
 	newTokenArray[1] = "EQUALS";
 	newTokenArray[2] = "NUMBER";
 	newTokenArray[3] = "ADD";
-	newTokenArray[4] = "MINUS";
+	newTokenArray[4] = "SUB";
 	newTokenArray[5] = "MULT";
 	newTokenArray[6] = "DIV";
 	newTokenArray[7] = "ERROR";

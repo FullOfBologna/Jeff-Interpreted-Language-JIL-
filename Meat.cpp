@@ -45,14 +45,13 @@ void Meat::readFile()
 
 		TokenList tokenList = m_potatoes.parseLine();
 
-		for (auto& token : tokenList)
-		{
-			std::cout << "Line: " << lineNumber << " ";
-			printToken(token);
-		}
+		//for (auto& token : tokenList)
+		//{
+		//	std::cout << "Line: " << lineNumber << " ";
+		//	printToken(token);
+		//}
 
 		m_lexy.setOverallTokenList(tokenList);
-
 
 		//printASCII(readString);
 

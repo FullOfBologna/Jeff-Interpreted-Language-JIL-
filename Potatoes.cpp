@@ -37,7 +37,7 @@ TokenList Potatoes::parseLine()
 			continue;
 		}
 		
-		if (isFirstChar && (val == '+'))
+		if (isFirstChar && ((val == '+') || (val == '-') || (val == '*') || (val == '/')))
 		{
 			tempString += val;
 			parsedStringList.push_back(tempString);

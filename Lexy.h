@@ -35,12 +35,14 @@ private:
 	void storeVariable(std::string varName);
 	void updateMapValue(std::string, float);
 
+	bool getOperatorValues(float* floatArray, uint32_t iterator);
+
 	void printStoredVariables();
 
 	/// <summary>
 	/// This will be the big one. The logic will admittedly get nasty before it can be refined. 
 	/// </summary>
-	void executeAnalyzedInstructions();
+	bool executeAnalyzedInstructions(TokenList tokenList);
 
 
 };
