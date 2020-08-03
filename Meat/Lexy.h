@@ -1,7 +1,7 @@
 #pragma once
 // Lexical Analyzer to execute a received Token List. 
 
-#include "CommonIncludes.h"
+#include "../Utils/CommonIncludes.h"
 #include <sstream>
 #include <iostream>
 #include <map>

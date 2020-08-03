@@ -14,8 +14,8 @@ Lexy::~Lexy()
 
 void Lexy::setOverallTokenList(TokenList inputTokenList)
 {
-	m_inputTokenList = inputTokenList;
-	executeAnalyzedInstructions();
+	// m_inputTokenList = inputTokenList;
+	executeAnalyzedInstructions(inputTokenList);
 }
 
 bool Lexy::isStored(std::string varName)

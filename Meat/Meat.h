@@ -4,9 +4,9 @@
 #include <iostream>
 #include <sstream>
 
-#include "JeffFile.h"
+#include "../FileReading/JeffFile.h"
 
-#include "Potatoes.h"
+#include "../Potatoes/Potatoes.h"
 #include "Lexy.h"
 
 //Meat of the interpreter. 

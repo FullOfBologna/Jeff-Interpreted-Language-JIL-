@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include <sys\stat.h>
+#include <sys/stat.h>
 
 #include "CommonIncludes.h"
 

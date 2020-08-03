@@ -338,3 +338,36 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+CMakeFiles/cmake.check_cache
+.vscode/c_cpp_properties.json
+CMakeFiles/CMakeDirectoryInformation.cmake
+CMakeFiles/Makefile.cmake
+CMakeFiles/Makefile2
+CMakeFiles/progress.marks
+CMakeFiles/TargetDirectories.txt
+CMakeFiles/3.17.4/CMakeCCompiler.cmake
+CMakeFiles/3.17.4/CMakeCXXCompiler.cmake
+CMakeFiles/3.17.4/CMakeDetermineCompilerABI_C.bin
+CMakeFiles/3.17.4/CMakeDetermineCompilerABI_CXX.bin
+CMakeFiles/3.17.4/CMakeSystem.cmake
+CMakeFiles/3.17.4/CompilerIdC/a.out
+CMakeFiles/3.17.4/CompilerIdC/CMakeCCompilerId.c
+CMakeFiles/3.17.4/CompilerIdCXX/a.out
+CMakeFiles/3.17.4/CompilerIdCXX/CMakeCXXCompilerId.cpp
+CMakeFiles/JILInterpreter.dir/build.make
+CMakeFiles/JILInterpreter.dir/cmake_clean.cmake
+CMakeFiles/JILInterpreter.dir/CXX.includecache
+CMakeFiles/JILInterpreter.dir/depend.internal
+CMakeFiles/JILInterpreter.dir/depend.make
+CMakeFiles/JILInterpreter.dir/DependInfo.cmake
+CMakeFiles/JILInterpreter.dir/flags.make
+CMakeFiles/JILInterpreter.dir/Interpreter.cpp.o
+CMakeFiles/JILInterpreter.dir/link.txt
+CMakeFiles/JILInterpreter.dir/progress.make
+CMakeFiles/JILInterpreter.dir/Meat/Meat.cpp.o
+CMakeFiles/JILInterpreter.dir/Utils/Utils.cpp.o
+CMakeFiles/Progress/4
+CMakeFiles/Progress/count.txt
+CMakeCache.txt
+cmake_install.cmake
+Makefile

@@ -3,11 +3,11 @@
 #include <cstdint>
 #include <string>
 #include <vector>
-#include <sys\stat.h>
+#include <sys/stat.h>
 #include <fstream>
 #include <iostream>
 
-#include "CommonIncludes.h"
+#include "../Utils/CommonIncludes.h"
 
 //This creates a JeffFile object which stores the position of the interpreting script.
 // and other relevant data. 
