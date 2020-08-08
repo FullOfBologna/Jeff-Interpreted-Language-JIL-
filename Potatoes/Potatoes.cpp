@@ -52,7 +52,7 @@ TokenList Potatoes::parseLine()
 		return tokenList;
 	}
 
-	if((pos-outputStringList[0] < 1))
+	if((pos-outputStringList[0].size() < 1))
 	{
 		return tokenList;
 	}
