@@ -1,6 +1,8 @@
 #pragma once
 
 #include <map>
+#include <regex>
+#include <iterator>
 
 #include "Tokenizer.h"
 #include "../Utils/CommonIncludes.h"
@@ -16,9 +18,18 @@ public:
 
 private:
 
-	Tokenizer m_tokenizer;
+	Tokenizer m_tokenizer;	
 
-	std::string m_currentLine;
+	std::string m_currentLineString;
 
+	//Priority Operator List. Used by the parser for splitting up the input line into strings for the tokenizer.
+
+	bool m_isInitialized;
+	std::vector<std::string> m_operatorList;
+
+	void initializeOperatorList();
+
+	int positionMatch(std::string inputOper);
+	void splitString(std::vector<std::string>& outputStringList, std::string& inputString, int);
 };
 

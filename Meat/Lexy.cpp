@@ -85,7 +85,7 @@ bool Lexy::executeAnalyzedInstructions(TokenList inputTokenList) {
 			// The EQUALS Operator needs to check if there are more expressions after the equals sign, to 
 			// Fully evaluate the right side, before storing to the input name. 
 
-			TokenList rightSideTokenList = // Grab token list starting at Iterator +1.
+			// TokenList rightSideTokenList = ;// Grab token list starting at Iterator +1.
 
 			std::string variableName = getValue(inputTokenList[iterator - 1]);
 			
