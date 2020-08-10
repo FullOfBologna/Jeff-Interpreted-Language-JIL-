@@ -17,6 +17,10 @@ Token Tokenizer::generateToken(std::string input)
 	Token token;
 	//Parse only number first, so it does not get stored as a variable
 
+	stripSpaces(input);
+
+	std::cout << "{" << input << "}" << std::endl;
+
 	if (isNumber(input))
 	{
 		token = std::make_tuple(m_tokenLUT[2], input);
@@ -67,4 +71,25 @@ TokenNameArray Tokenizer::initializeTokenArray()
 	newTokenArray[7] = "ERROR";
 
 	return newTokenArray;
+}
+
+void Tokenizer::stripSpaces(std::string& inputString)
+{
+	// std::cout << "InputSTRING = {" << inputString << "}" << std::endl;
+
+	int i = 0;
+
+	std::string s;
+
+	for(int i = 0; i < inputString.length(); i++)
+	{
+		if(inputString[i] != ' ')
+		{
+			s.push_back(inputString[i]);
+		}
+	}
+
+	inputString = s;
+
+	// std::cout << "New Input String = {" << inputString << "}" << std::endl;
 }

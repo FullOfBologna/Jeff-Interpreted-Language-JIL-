@@ -30,7 +30,7 @@ private:
 
 	void initializeOperatorList();
 
-	int positionMatch(std::string inputOper);
+	int positionMatch(std::string& inputString, std::string inputOper);
 	void splitString(std::vector<std::string>& outputStringList, std::string& inputString, int);
 };
 

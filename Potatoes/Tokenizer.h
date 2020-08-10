@@ -19,6 +19,6 @@ private:
 
 	TokenNameArray initializeTokenArray();
 	Name interpretToken(std::string input);
-
+	void stripSpaces(std::string& input);
 };
 
