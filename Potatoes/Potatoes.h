@@ -25,6 +25,7 @@ private:
 	//Priority Operator List. Used by the parser for splitting up the input line into strings for the tokenizer.
 
 	bool m_isInitialized;
+	int m_operatorIterator;
 	std::vector<std::string> m_operatorList;
 
 	void initializeOperatorList();
