@@ -5,6 +5,7 @@
 #include <sstream>
 #include <iostream>
 #include <map>
+#include <deque>
 
 class Lexy
 {
@@ -39,10 +40,18 @@ private:
 
 	void printStoredVariables();
 
+	bool findMathOperators(std::deque<int>&, TokenList& tokenList);
+	bool findEqualsOperator(std::deque<int>&, TokenList& tokenList);
+
+	bool findMultDivOps(std::deque<int>&, TokenList& tokenList);
+	bool findAddSubOps(std::deque<int>&, TokenList& tokenList);
+
 	/// <summary>
 	/// This will be the big one. The logic will admittedly get nasty before it can be refined. 
 	/// </summary>
 	bool executeAnalyzedInstructions(TokenList tokenList);
+
+	bool newExecutor(TokenList tokenList);
 
 
 };

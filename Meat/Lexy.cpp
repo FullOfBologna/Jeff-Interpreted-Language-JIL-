@@ -15,7 +15,8 @@ Lexy::~Lexy()
 void Lexy::setOverallTokenList(TokenList inputTokenList)
 {
 	// m_inputTokenList = inputTokenList;
-	executeAnalyzedInstructions(inputTokenList);
+	// executeAnalyzedInstructions(inputTokenList);
+	newExecutor(inputTokenList);
 }
 
 bool Lexy::isStored(std::string varName)
@@ -54,6 +55,34 @@ void Lexy::printStoredVariables()
 //Token List should be reversed, where the right most tokens are evaluated first. 
 
 //Need to improve storing of variables. 
+
+
+//First have some pre handling of tokens. 
+
+//-> Find Operators on the right side first.
+//
+//	Store indexes of priority operators first. 
+//
+//	Makes sense to 
+// 
+
+bool Lexy::newExecutor(TokenList inputTokenList)
+{
+	std::deque<int> priorityIndexVector;
+
+	findMathOperators(priorityIndexVector, inputTokenList);
+	findEqualsOperator(priorityIndexVector, inputTokenList);
+
+	std::cout << "OperatorVector: {";
+	for(auto index : priorityIndexVector)
+	{
+		std::cout << index << ",";
+	}
+
+	std::cout << "}" << std::endl;
+
+	return true;
+}
 
 bool Lexy::executeAnalyzedInstructions(TokenList inputTokenList) {
 	//Run through the token list. 
@@ -201,4 +230,78 @@ bool Lexy::getOperatorValues(float* outputFloatArray, uint32_t iterator)
 
 	return true;
 
+}
+
+bool Lexy::findMathOperators(std::deque<int>& indexDeque, TokenList& inputTokenList)
+{
+	bool foundOperators = false;
+
+	int listLength = inputTokenList.size();
+
+	//Left Associative Operators for both, so push_back. 
+	foundOperators = findMultDivOps(indexDeque, inputTokenList);
+	foundOperators = findAddSubOps(indexDeque, inputTokenList);
+
+	return foundOperators;
+}
+
+bool Lexy::findMultDivOps(std::deque<int>& indexDeque, TokenList& inputTokenList)
+{
+	bool foundOperators = false;
+
+	int listLength = inputTokenList.size();
+
+	for(int index = 0; index < listLength; index++)
+	{
+		Name name = getName(inputTokenList[index]);
+
+		if((name == "MULT") || (name == "DIV"))
+		{
+			indexDeque.push_back(index);
+			foundOperators = true;
+		}
+	}
+
+	return foundOperators;
+}
+
+bool Lexy::findAddSubOps(std::deque<int>& indexDeque, TokenList& inputTokenList)
+{
+	bool foundOperators = false;
+
+	int listLength = inputTokenList.size();
+
+	for(int index = 0; index < listLength; index++)
+	{
+		Name name = getName(inputTokenList[index]);
+
+		if((name == "ADD") || (name == "SUB"))
+		{
+			indexDeque.push_back(index);
+			foundOperators = true;
+		}
+	}
+
+	return foundOperators;
+}
+
+
+bool Lexy::findEqualsOperator(std::deque<int>& indexDeque, TokenList& inputTokenList)
+{
+	bool foundOperators = false;
+
+	int listLength = inputTokenList.size();
+
+	for(int index = 0; index < listLength; index++)
+	{
+		Name name = getName(inputTokenList[index]);
+
+		if(name == "EQUALS")
+		{
+			indexDeque.push_back(index);
+			foundOperators = true;
+		}
+	}
+
+	return foundOperators;
 }

@@ -43,23 +43,28 @@ TokenList Potatoes::parseLine()
 
 	splitString(outputStringList, m_currentLineString, pos);	
 
-	std::cout << "Output String List = {";
-	for(auto outputString : outputStringList)
-	{
-		std::cout << outputString << ",";
-	}
-	std::cout << "}" << std::endl;
+	// std::cout << "Output String List = {";
+	// for(auto outputString : outputStringList)
+	// {
+	// 	std::cout << outputString << ",";
+	// }
+	// std::cout << "}" << std::endl;
 
 	for (auto& str : outputStringList)
 	{
 		Token token;
 
 		token = m_tokenizer.generateToken(str);
+
+		std::cout << "Token = {" << getName(token) << ", " << getValue(token) << "}" << std::endl;
+
 		tokenList.push_back(token);
 	}
 
 	return tokenList;
 }
+
+
 
 int Potatoes::positionMatch(std::string& inputString,std::string inputOper)
 {
