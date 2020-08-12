@@ -73,13 +73,84 @@ bool Lexy::newExecutor(TokenList inputTokenList)
 	findMathOperators(priorityIndexVector, inputTokenList);
 	findEqualsOperator(priorityIndexVector, inputTokenList);
 
-	std::cout << "OperatorVector: {";
+	TokenList newTokenList;
+
 	for(auto index : priorityIndexVector)
 	{
-		std::cout << index << ",";
-	}
 
-	std::cout << "}" << std::endl;
+		//Evaluate the expression at the index, and update the inputTokenList.
+		Name name = getName(inputTokenList[index]);
+
+		Token resultToken;
+
+		bool isMult = (name == "MULT");
+		bool isDiv = (name == "DIV");
+		bool isAdd = (name == "ADD");
+		bool isSub = (name == "SUB");
+
+		bool isArithmetic = (isMult || isDiv || isAdd || isSub);
+
+		if(isArithmetic)
+		{
+			//Grab the left and right values. If numbers, evaluate the numbers. If names, recall Variable Value. 
+
+			float leftVal, rightVal;
+
+			Name leftName = getName(inputTokenList[index-1]);
+			Name rightName = getName(inputTokenList[index+1]);
+
+			if((leftName == "NUMBER") && (rightName == "NUMBER"))
+			{
+				float result;
+
+				leftVal = atof(getValue(inputTokenList[index-1]).c_str());
+				rightVal = atof(getValue(inputTokenList[index+1]).c_str());
+				
+				//TODO: Analyze for Unexpected Behavior
+
+				if(isMult)
+				{
+					result = leftVal*rightVal;
+				}
+
+				if(isDiv)
+				{
+					float epsilon = 0.000000000000001;
+
+					if(rightVal > epsilon)
+					{
+						result = leftVal/rightVal;						
+					}
+				}
+
+				if(isAdd)
+				{
+					result = leftVal + rightVal;
+				}
+
+				if(isSub)
+				{
+					result = leftVal - rightVal;
+				}
+
+				resultToken = std::make_tuple("NUMBER", std::to_string(result));
+			}
+		}
+
+		std::vector<Token>::iterator leftIndex = find(inputTokenList.begin(),inputTokenList.end(), (index-1));
+		std::vector<Token>::iterator rightIndex = find(inputTokenList.begin(),inputTokenList.end(), (index+1));
+
+		int leftPosToDelete = std::distance(inputTokenList.begin(), leftIndex);
+		int rightPosToDelete = std::distance(inputTokenList.begin(), rightIndex);
+
+		int insertPos = leftPosToDelete;
+
+		inputTokenList.erase(inputTokenList.begin()+leftPosToDelete, inputTokenList.begin() + rightPosToDelete);
+		
+		//Now that the original stuff is 
+
+		inputTokenList.insert(inputTokenList.begin() + insertPos, resultToken);
+	}
 
 	return true;
 }
