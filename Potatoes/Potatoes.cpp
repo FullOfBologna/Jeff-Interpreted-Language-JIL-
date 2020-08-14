@@ -56,7 +56,7 @@ TokenList Potatoes::parseLine()
 
 		token = m_tokenizer.generateToken(str);
 
-		std::cout << "Token = {" << getName(token) << ", " << getValue(token) << "}" << std::endl;
+		// std::cout << "Token = {" << getName(token) << ", " << getValue(token) << "}" << std::endl;
 
 		tokenList.push_back(token);
 	}

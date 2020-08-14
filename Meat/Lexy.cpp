@@ -75,6 +75,8 @@ bool Lexy::newExecutor(TokenList inputTokenList)
 
 	TokenList newTokenList;
 
+	std::cout << "Inside new Executor. Calculating Values: " << '\n';
+
 	for(auto index : priorityIndexVector)
 	{
 
@@ -89,6 +91,8 @@ bool Lexy::newExecutor(TokenList inputTokenList)
 		bool isSub = (name == "SUB");
 
 		bool isArithmetic = (isMult || isDiv || isAdd || isSub);
+
+		std::cout << "Evaluating at index " << index << '\n';
 
 		if(isArithmetic)
 		{
@@ -137,19 +141,33 @@ bool Lexy::newExecutor(TokenList inputTokenList)
 			}
 		}
 
-		std::vector<Token>::iterator leftIndex = find(inputTokenList.begin(),inputTokenList.end(), (index-1));
-		std::vector<Token>::iterator rightIndex = find(inputTokenList.begin(),inputTokenList.end(), (index+1));
+		// std::vector<Token>::iterator leftIndex = find(inputTokenList.begin(),inputTokenList.end(), (index-1));
+		// std::vector<Token>::iterator rightIndex = find(inputTokenList.begin(),inputTokenList.end(), (index+1));
 
-		int leftPosToDelete = std::distance(inputTokenList.begin(), leftIndex);
-		int rightPosToDelete = std::distance(inputTokenList.begin(), rightIndex);
+		std::vector<Token>::iterator leftIter;
+		std::vector<Token>::iterator rightIter;
 
-		int insertPos = leftPosToDelete;
+		leftIter = std::begin(inputTokenList) + (index-1);
+		leftIter = std::begin(inputTokenList) + (index-1);
 
-		inputTokenList.erase(inputTokenList.begin()+leftPosToDelete, inputTokenList.begin() + rightPosToDelete);
+
+		int leftIndex = (index - 1);
+		int rightIndex = (index + 1);
+
+		//GOAL: Delete the two numbers and the arithmetic operator, and replace all three with the resulting value. 
+		// This could work even with variables eventually. 
+
+		inputTokenList.erase(leftIter, rightIter);
 		
 		//Now that the original stuff is 
 
-		inputTokenList.insert(inputTokenList.begin() + insertPos, resultToken);
+		inputTokenList.insert(leftIter, resultToken);
+	}
+
+	std::cout << "Printing Token List: " << '\n';
+	for(auto& token : inputTokenList)
+	{
+		printToken(token);
 	}
 
 	return true;

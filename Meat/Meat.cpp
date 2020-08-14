@@ -74,10 +74,4 @@ void Meat::printASCII(std::string& inputString)
 	std::cout << std::endl;
 }
 
-void Meat::printToken(Token token)
-{
-	Name name = std::get<0>(token);
-	std::string value = std::get<1>(token);
 
-	std::cout << "Token Name: " << name << ", Value: " << value << std::endl;
-}
