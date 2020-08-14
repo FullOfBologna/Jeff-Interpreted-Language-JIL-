@@ -77,6 +77,15 @@ bool Lexy::newExecutor(TokenList inputTokenList)
 
 	std::cout << "Inside new Executor. Calculating Values: " << '\n';
 
+	std::cout << "Priority IndexList = ";
+
+	for(auto index : priorityIndexVector)
+	{
+		std::cout << index << ',';
+	}
+
+	std::cout << '\n';
+
 	for(auto index : priorityIndexVector)
 	{
 
@@ -144,11 +153,13 @@ bool Lexy::newExecutor(TokenList inputTokenList)
 		// std::vector<Token>::iterator leftIndex = find(inputTokenList.begin(),inputTokenList.end(), (index-1));
 		// std::vector<Token>::iterator rightIndex = find(inputTokenList.begin(),inputTokenList.end(), (index+1));
 
+		std::cout << "Before iterators defined. " << '\n';
+
 		std::vector<Token>::iterator leftIter;
 		std::vector<Token>::iterator rightIter;
 
 		leftIter = std::begin(inputTokenList) + (index-1);
-		leftIter = std::begin(inputTokenList) + (index-1);
+		rightIter = std::begin(inputTokenList) + (index+1);
 
 
 		int leftIndex = (index - 1);
@@ -157,11 +168,25 @@ bool Lexy::newExecutor(TokenList inputTokenList)
 		//GOAL: Delete the two numbers and the arithmetic operator, and replace all three with the resulting value. 
 		// This could work even with variables eventually. 
 
+		// std::cout << "tokenList prior to erase: " << '\n';
+
+		// for(auto token : inputTokenList)
+		// {
+		// 	printToken(token);
+		// }
+
 		inputTokenList.erase(leftIter, rightIter);
 		
 		//Now that the original stuff is 
 
-		inputTokenList.insert(leftIter, resultToken);
+		// std::cout << "After tokenList: ";
+
+		// for(auto token : inputTokenList)
+		// {
+		// 	printToken(token);
+		// }
+		
+		inputTokenList.insert(leftIter + 1, resultToken);
 	}
 
 	std::cout << "Printing Token List: " << '\n';
