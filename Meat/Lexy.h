@@ -35,7 +35,8 @@ private:
 
 	void storeVariable(std::string varName);
 	void updateMapValue(std::string, float);
-
+	void getMapValue(float& value, std::string var);
+	
 	bool getOperatorValues(float* floatArray, uint32_t iterator);
 
 	void printStoredVariables();
@@ -53,6 +54,9 @@ private:
 
 	bool newExecutor(TokenList tokenList);
 
+	bool checkIfStored(std::string& var);
 
+	bool performArithmetic(TokenList& IOTokenList);
+	bool performLogic(TokenList& inputTokenList);
 };
 

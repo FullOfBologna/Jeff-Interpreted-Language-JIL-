@@ -17,6 +17,7 @@ void Lexy::setOverallTokenList(TokenList inputTokenList)
 	// m_inputTokenList = inputTokenList;
 	// executeAnalyzedInstructions(inputTokenList);
 	newExecutor(inputTokenList);
+
 }
 
 bool Lexy::isStored(std::string varName)
@@ -44,6 +45,11 @@ void Lexy::updateMapValue(std::string variableName, float variableValue)
 	varPair->second = variableValue;
 }
 
+void Lexy::getMapValue(float& outputFloat, std::string variableName)
+{
+	outputFloat = m_storedVariables.find(variableName)->second;
+}
+
 void Lexy::printStoredVariables()
 {
 	for (auto varPair : m_storedVariables)
@@ -68,29 +74,135 @@ void Lexy::printStoredVariables()
 
 bool Lexy::newExecutor(TokenList inputTokenList)
 {
+
+	if(!performArithmetic(inputTokenList))
+	{
+		std::cout << "ERROR: Error performing arithmetic." << '\n';
+	}
+
+	performLogic(inputTokenList);
+
+	return true;
+
+}
+
+bool Lexy::performLogic(TokenList& inputTokenList)
+{
+	print("Analyzing Input Token List");
+
+	printTokenList(inputTokenList);
+
+	int listSize = inputTokenList.size();
+	for(int index = 0; index < listSize; index++)
+	{
+		Name name = getName(inputTokenList[index]);
+
+		if(name == "EQUALS")
+		{
+			int leftIndex = index-1;
+			int rightIndex = index+1;
+
+			if(index < 1)
+			{
+				print("ERROR: No Left hand Value.");
+				return false;
+			}
+
+			Name varTokenName = getName(inputTokenList[leftIndex]);
+			std::string var = getValue(inputTokenList[leftIndex]);
+
+			if(varTokenName != "NAME")
+			{
+				print("ERROR: Invalid variableName on left hand side. ");
+				return false;
+			}
+
+			if(rightIndex > (listSize-1))
+			{
+				print("ERROR: Nothing to assign on right hand side. ");
+				return false;
+			}
+
+			std::string rightName = getName(inputTokenList[rightIndex]);
+			std::string rightValue = getValue(inputTokenList[rightIndex]);
+			float rightValueFloat;
+
+			if(rightName == "NUMBER")
+			{
+				//Convert right Value to float
+				rightValueFloat = stof(rightValue);
+			}
+			else if(rightName == "NAME")
+			{
+				print("Storing variable into another variable.");
+
+				if(isStored(rightValue))
+				{
+					getMapValue(rightValueFloat, rightValue);
+				}
+			}
+
+			if(!isStored(var))
+			{
+				storeVariable(var);
+			}
+
+			updateMapValue(var,rightValueFloat);
+
+		}
+	}
+
+	return true;
+}
+
+bool Lexy::performArithmetic(TokenList& IOTokenList)
+{
 	std::deque<int> priorityIndexVector;
 
-	findMathOperators(priorityIndexVector, inputTokenList);
-	findEqualsOperator(priorityIndexVector, inputTokenList);
+	findMathOperators(priorityIndexVector, IOTokenList);
+	findEqualsOperator(priorityIndexVector, IOTokenList);
 
 	TokenList newTokenList;
 
-	std::cout << "Inside new Executor. Calculating Values: " << '\n';
+	int prevIndex = 0;
 
-	std::cout << "Priority IndexList = ";
+	// std::cout << "Inside new Executor. Calculating Values: " << '\n';
 
-	for(auto index : priorityIndexVector)
+	// std::cout << "Priority IndexList = ";
+
+	// for(auto index : priorityIndexVector)
+	// {
+	// 	std::cout << index << ',';
+	// }
+
+	// std::cout << '\n';
+
+
+	// BIG ISSUE: TODO: Need to store a temp vector 
+
+	int priorityIndexLen = priorityIndexVector.size();
+
+	for(int curIndex = 0; curIndex < priorityIndexLen; curIndex++)
 	{
-		std::cout << index << ',';
-	}
+		int diff = 0;
 
-	std::cout << '\n';
+		int index = priorityIndexVector[curIndex];
 
-	for(auto index : priorityIndexVector)
-	{
+		int endIndex = priorityIndexLen-1;
 
-		//Evaluate the expression at the index, and update the inputTokenList.
-		Name name = getName(inputTokenList[index]);
+		if(index > prevIndex && (prevIndex != 0))
+		{
+			diff = index-prevIndex;
+		}
+
+		int newIndex = index-diff;
+
+		// std::cout << "Evaluating at index " << newIndex << '\n';
+
+		// std::cout << "Index = " << index << '\n';
+
+		//Evaluate the expression at the index, and update the IOTokenList.
+		Name name = getName(IOTokenList[newIndex]);
 
 		Token resultToken;
 
@@ -101,7 +213,7 @@ bool Lexy::newExecutor(TokenList inputTokenList)
 
 		bool isArithmetic = (isMult || isDiv || isAdd || isSub);
 
-		std::cout << "Evaluating at index " << index << '\n';
+		// std::cout << "Evaluating at index " << newIndex << '\n';
 
 		if(isArithmetic)
 		{
@@ -109,15 +221,15 @@ bool Lexy::newExecutor(TokenList inputTokenList)
 
 			float leftVal, rightVal;
 
-			Name leftName = getName(inputTokenList[index-1]);
-			Name rightName = getName(inputTokenList[index+1]);
+			Name leftName = getName(IOTokenList[newIndex-1]);
+			Name rightName = getName(IOTokenList[newIndex+1]);
 
 			if((leftName == "NUMBER") && (rightName == "NUMBER"))
 			{
 				float result;
 
-				leftVal = atof(getValue(inputTokenList[index-1]).c_str());
-				rightVal = atof(getValue(inputTokenList[index+1]).c_str());
+				leftVal = atof(getValue(IOTokenList[newIndex-1]).c_str());
+				rightVal = atof(getValue(IOTokenList[newIndex+1]).c_str());
 				
 				//TODO: Analyze for Unexpected Behavior
 
@@ -150,50 +262,55 @@ bool Lexy::newExecutor(TokenList inputTokenList)
 			}
 		}
 
-		// std::vector<Token>::iterator leftIndex = find(inputTokenList.begin(),inputTokenList.end(), (index-1));
-		// std::vector<Token>::iterator rightIndex = find(inputTokenList.begin(),inputTokenList.end(), (index+1));
+		// std::vector<Token>::iterator leftIndex = find(IOTokenList.begin(),IOTokenList.end(), (index-1));
+		// std::vector<Token>::iterator rightIndex = find(IOTokenList.begin(),IOTokenList.end(), (index+1));
 
-		std::cout << "Before iterators defined. " << '\n';
+		// std::cout << "Before iterators defined. " << '\n';
 
 		std::vector<Token>::iterator leftIter;
 		std::vector<Token>::iterator rightIter;
 
-		leftIter = std::begin(inputTokenList) + (index-1);
-		rightIter = std::begin(inputTokenList) + (index+1);
+		leftIter = std::begin(IOTokenList) + (newIndex-1);
+		rightIter = std::begin(IOTokenList) + (newIndex+1);
 
 
-		int leftIndex = (index - 1);
-		int rightIndex = (index + 1);
+		int leftIndex = (newIndex - 1);
+		int rightIndex = (newIndex + 1);
 
 		//GOAL: Delete the two numbers and the arithmetic operator, and replace all three with the resulting value. 
 		// This could work even with variables eventually. 
 
 		// std::cout << "tokenList prior to erase: " << '\n';
 
-		// for(auto token : inputTokenList)
-		// {
-		// 	printToken(token);
-		// }
+		// printTokenList(IOTokenList);
 
-		inputTokenList.erase(leftIter, rightIter);
-		
-		//Now that the original stuff is 
+		// 
 
-		// std::cout << "After tokenList: ";
+		if(curIndex < endIndex)
+		{
+			IOTokenList.erase(leftIter, rightIter+1);
 
-		// for(auto token : inputTokenList)
-		// {
-		// 	printToken(token);
-		// }
-		
-		inputTokenList.insert(leftIter + 1, resultToken);
+			// std::cout << "Result Token = ";
+
+			printToken(resultToken);
+
+			IOTokenList.insert(leftIter, resultToken);
+
+			// std::cout << "Printing Token List: " << '\n';
+			// for(auto& token : IOTokenList)
+			// {
+			// 	printToken(token);
+			// }
+
+			prevIndex = newIndex;
+		}
 	}
 
-	std::cout << "Printing Token List: " << '\n';
-	for(auto& token : inputTokenList)
-	{
-		printToken(token);
-	}
+	// std::cout << "RESULTANT Token List: " << '\n';
+
+	// printTokenList(IOTokenList);
+
+	//done with arithmetic
 
 	return true;
 }
@@ -398,7 +515,6 @@ bool Lexy::findAddSubOps(std::deque<int>& indexDeque, TokenList& inputTokenList)
 
 	return foundOperators;
 }
-
 
 bool Lexy::findEqualsOperator(std::deque<int>& indexDeque, TokenList& inputTokenList)
 {
