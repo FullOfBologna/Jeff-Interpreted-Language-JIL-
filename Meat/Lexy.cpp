@@ -52,9 +52,11 @@ void Lexy::getMapValue(float& outputFloat, std::string variableName)
 
 void Lexy::printStoredVariables()
 {
+	std::cout << "STORED VARIABLES: " << '\n';
+
 	for (auto varPair : m_storedVariables)
 	{
-		std::cout << "Name: " << varPair.first << ", Value: " << varPair.second << std::endl;
+		std::cout << "Name: " << varPair.first << ", Value: " << varPair.second << '\n';
 	}
 }
 
@@ -78,9 +80,12 @@ bool Lexy::newExecutor(TokenList inputTokenList)
 	if(!performArithmetic(inputTokenList))
 	{
 		std::cout << "ERROR: Error performing arithmetic." << '\n';
+		return false;
 	}
 
 	performLogic(inputTokenList);
+
+	printStoredVariables();		
 
 	return true;
 
@@ -88,7 +93,7 @@ bool Lexy::newExecutor(TokenList inputTokenList)
 
 bool Lexy::performLogic(TokenList& inputTokenList)
 {
-	print("Analyzing Input Token List");
+	// print("Analyzing Input Token List");
 
 	printTokenList(inputTokenList);
 
@@ -219,47 +224,76 @@ bool Lexy::performArithmetic(TokenList& IOTokenList)
 		{
 			//Grab the left and right values. If numbers, evaluate the numbers. If names, recall Variable Value. 
 
-			float leftVal, rightVal;
+			float leftVal, rightVal, result;
 
 			Name leftName = getName(IOTokenList[newIndex-1]);
 			Name rightName = getName(IOTokenList[newIndex+1]);
 
-			if((leftName == "NUMBER") && (rightName == "NUMBER"))
+			leftVal = atof(getValue(IOTokenList[newIndex-1]).c_str());
+			rightVal = atof(getValue(IOTokenList[newIndex+1]).c_str());
+
+			//Overwrite leftVal or rightVal of token NAME
+
+			if(leftName == "NAME")
 			{
-				float result;
-
-				leftVal = atof(getValue(IOTokenList[newIndex-1]).c_str());
-				rightVal = atof(getValue(IOTokenList[newIndex+1]).c_str());
-				
-				//TODO: Analyze for Unexpected Behavior
-
-				if(isMult)
+				std::string leftVarName = getValue(IOTokenList[newIndex-1]);
+				//Grab the stored variable and set leftVal = to it. 
+				if(!isStored(leftVarName))
 				{
-					result = leftVal*rightVal;
+					std::cout << "ERROR: Unknown variable: " << leftVarName << ". Quitting." << '\n';
+					return false;
 				}
 
-				if(isDiv)
-				{
-					float epsilon = 0.000000000000001;
+				getMapValue(leftVal, leftVarName);
 
-					if(rightVal > epsilon)
-					{
-						result = leftVal/rightVal;						
-					}
-				}
-
-				if(isAdd)
-				{
-					result = leftVal + rightVal;
-				}
-
-				if(isSub)
-				{
-					result = leftVal - rightVal;
-				}
-
-				resultToken = std::make_tuple("NUMBER", std::to_string(result));
+				// std::cout << "LEFT VALUE = " << leftVal << '\n';
 			}
+
+			if(rightName == "NAME")
+			{
+				std::string rightVarName = getValue(IOTokenList[newIndex+1]);
+				//Grab the stored variable and set leftVal = to it. 
+				if(!isStored(rightVarName))
+				{
+					std::cout << "ERROR: Unknown variable: " << rightVarName << ". Quitting." << '\n';
+					return false;
+				}
+
+				getMapValue(rightVal, rightVarName);
+
+				// std::cout << "RIGHT VALUE = " << rightVal << '\n';
+
+			}
+
+			
+			//TODO: Analyze for Unexpected Behavior
+
+			if(isMult)
+			{
+				result = leftVal*rightVal;
+			}
+
+			if(isDiv)
+			{
+				float epsilon = 0.000000000000001;
+
+				if(rightVal > epsilon)
+				{
+					result = leftVal/rightVal;						
+				}
+			}
+
+			if(isAdd)
+			{
+				result = leftVal + rightVal;
+			}
+
+			if(isSub)
+			{
+				result = leftVal - rightVal;
+			}
+
+			resultToken = std::make_tuple("NUMBER", std::to_string(result));
 		}
 
 		// std::vector<Token>::iterator leftIndex = find(IOTokenList.begin(),IOTokenList.end(), (index-1));
@@ -386,7 +420,7 @@ bool Lexy::executeAnalyzedInstructions(TokenList inputTokenList) {
 				continue;
 			};
 
-			std::cout << "EVALUATING: " << valArray[0] << "+" << valArray[1] << " = " << valArray[0]+valArray[1] << std::endl;
+			// std::cout << "EVALUATING: " << valArray[0] << "+" << valArray[1] << " = " << valArray[0]+valArray[1] << std::endl;
 		}
 		else if (name == "SUB")
 		{
@@ -396,7 +430,7 @@ bool Lexy::executeAnalyzedInstructions(TokenList inputTokenList) {
 				continue;
 			}
 
-			std::cout << "EVALUATING: " << valArray[0] << "-" << valArray[1] << " = " << valArray[0]-valArray[1] << std::endl;
+			// std::cout << "EVALUATING: " << valArray[0] << "-" << valArray[1] << " = " << valArray[0]-valArray[1] << std::endl;
 
 		}
 		else if (name == "MULT")
@@ -407,7 +441,7 @@ bool Lexy::executeAnalyzedInstructions(TokenList inputTokenList) {
 				continue;
 			}
 
-			std::cout << "EVALUATING: " << valArray[0] << "*" << valArray[1] << " = " << valArray[0]*valArray[1] << std::endl;
+			// std::cout << "EVALUATING: " << valArray[0] << "*" << valArray[1] << " = " << valArray[0]*valArray[1] << std::endl;
 
 		}
 		else if (name == "DIV")
@@ -423,7 +457,7 @@ bool Lexy::executeAnalyzedInstructions(TokenList inputTokenList) {
 
 				continue;
 			}
-			std::cout << "EVALUATING: " << valArray[0] << "/" << valArray[1] << " = " << valArray[0]/valArray[1] << std::endl;
+			// std::cout << "EVALUATING: " << valArray[0] << "/" << valArray[1] << " = " << valArray[0]/valArray[1] << std::endl;
 
 		}
 		else
