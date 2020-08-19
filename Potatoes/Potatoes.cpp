@@ -3,6 +3,7 @@
 Potatoes::Potatoes()
 	: m_tokenizer(Tokenizer()),
 	m_currentLineString(""),
+	m_keywordLUT(m_tokenizer.getKeywordArray()),
 	m_isInitialized(false),
 	m_operatorIterator(0),
 	m_operatorList{}	
@@ -104,8 +105,36 @@ void Potatoes::initializeOperatorList()
 		//Add arithmetic Operators
 		m_operatorList.push_back("[\+\-\/\*\%\^]");
 
+		//EmptyBrackets with nothing in the middle indicates a new list. 
+
+		m_operatorList.push_back("\{\}");
+
+		std::string regExKeyWordString = generateKeywordRegEx();
+
+		print(regExKeyWordString.c_str());
+
+		m_operatorList.push_back(regExKeyWordString);
+
 		m_isInitialized = true;
 	}
+}
+
+std::string Potatoes::generateKeywordRegEx()
+{
+	std::string regEx("(?:[\s]|^)(");
+
+	for(int index = 0; index < NUM_KEYWORDS; index++)
+	{
+		regEx.append(m_keywordLUT[index]);
+		if(index < NUM_KEYWORDS-1)
+		{
+			regEx.append("|");
+		}
+	}
+
+	regEx.append(")(?=[\s]|$)");
+
+	return regEx;
 }
 
 void Potatoes::splitString(std::vector<std::string>& outputStringList, std::string& inputString, int inputPos)

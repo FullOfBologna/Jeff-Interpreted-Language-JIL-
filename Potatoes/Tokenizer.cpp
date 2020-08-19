@@ -2,7 +2,8 @@
 
 Tokenizer::Tokenizer()
 	:
-	m_tokenLUT(initializeTokenArray())
+	m_tokenLUT(initializeTokenArray()),
+	m_keywordLUT(initializeKeywordArray())
 {
 
 }
@@ -68,9 +69,26 @@ TokenNameArray Tokenizer::initializeTokenArray()
 	newTokenArray[4] = "SUB";
 	newTokenArray[5] = "MULT";
 	newTokenArray[6] = "DIV";
-	newTokenArray[7] = "ERROR";
+	newTokenArray[7] = "KEYWD";
+	newTokenArray[8] = "ERROR";
 
 	return newTokenArray;
+}
+
+KeyWordArray Tokenizer::initializeKeywordArray()
+{
+	KeyWordArray keyWordArray;
+
+	keyWordArray[0] = "print";
+	keyWordArray[1] = "do";
+	keyWordArray[2] = "while";
+	keyWordArray[3] = "if";
+	keyWordArray[4] = "else";
+	keyWordArray[5] = "for";
+	keyWordArray[6] = "break";
+	keyWordArray[7] = "end";
+
+	return keyWordArray;
 }
 
 void Tokenizer::stripSpaces(std::string& inputString)
@@ -92,4 +110,9 @@ void Tokenizer::stripSpaces(std::string& inputString)
 	inputString = s;
 
 	// std::cout << "New Input String = {" << inputString << "}" << std::endl;
+}
+
+KeyWordArray Tokenizer::getKeywordArray()
+{
+	return m_keywordLUT;
 }

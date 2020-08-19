@@ -15,3 +15,4 @@ typedef std::string Name;
 typedef std::tuple<Name,std::string> Token;
 typedef std::array<Name,TOKEN_NAME_COUNT> TokenNameArray;
 typedef std::vector<Token> TokenList;
+typedef std::array<std::string, NUM_KEYWORDS> KeyWordArray;
