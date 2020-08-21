@@ -1,4 +1,7 @@
+print("Hello World")
+
 x =10+20-5
 y=x+2
+
 
 c= y*x
