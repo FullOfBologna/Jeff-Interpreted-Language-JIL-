@@ -38,37 +38,42 @@ TokenList Potatoes::parseLine()
 
 	parseForKeyword(parsedStringList);
 
+	for(int i = 0; i < parsedStringList.size(); i++)
+	{
+		std::cout << parsedStringList[i] << '\n';
+	}
+
 	pos = -1;
 
-	// //Match Arithmetic Operators
-	// pos = positionMatch(m_currentLineString, m_operatorList[1]);
+	//Match Arithmetic Operators
+	pos = positionMatch(m_currentLineString, m_operatorList[1]);
 
-	// std::vector<std::string> outputStringList;
+	std::vector<std::string> outputStringList;
 
-	// if(m_currentLineString.size() < 1)
-	// {
-	// 	return tokenList;
-	// }
+	if(m_currentLineString.size() < 1)
+	{
+		return tokenList;
+	}
 
-	// splitString(outputStringList, m_currentLineString, pos);	
+	splitString(outputStringList, m_currentLineString, pos);	
 
-	// std::cout << "Output String List = {";
-	// for(auto outputString : outputStringList)
-	// {
-	// 	std::cout << outputString << ",";
-	// }
-	// std::cout << "}" << std::endl;
+	std::cout << "Output String List = {";
+	for(auto outputString : outputStringList)
+	{
+		std::cout << outputString << ",";
+	}
+	std::cout << "}" << std::endl;
 
-	// for (auto& str : outputStringList)
-	// {
-	// 	Token token;
+	for (auto& str : outputStringList)
+	{
+		Token token;
 
-	// 	token = m_tokenizer.generateToken(str);
+		token = m_tokenizer.generateToken(str);
 
-	// 	// std::cout << "Token = {" << getName(token) << ", " << getValue(token) << "}" << std::endl;
+		// std::cout << "Token = {" << getName(token) << ", " << getValue(token) << "}" << std::endl;
 
-	// 	tokenList.push_back(token);
-	// }
+		tokenList.push_back(token);
+	}
 
 	return tokenList;
 }
@@ -83,21 +88,27 @@ void Potatoes::parseForKeyword(std::vector<std::string>& outputStringList)
 
 	std::smatch m;
 
+	//m will contain an index for the full string, plus all capture groups. 
+	// If the capture group contains a match, it will have a string value in it. 
+	// Thus it is valid to 
+
 	std::regex_search(m_currentLineString, m, rExp);
 
 	// Check the size of the matches. Specifically the sub matches. 
 
-	std::cout << "Number of Matches = " << m.size() << '\n';
+	// std::cout << "Number of Groups to match = " << m.size() << '\n';
 
+	int numMatches = 0;
 	//Skip 0 because that is the full match. 
 	for(int i = 1; i < m.size(); i++)
 	{
 		if(m[i] != "")
 		{
-			std::cout << "Match " << i << ": ";
-			std::cout << m[i] << '\n';
+			// std::cout << "Match " << i << ": ";
+			// std::cout << m[i] << '\n';
+			outputStringList.push_back(m[i]);
+			numMatches++;
 		}
-
 	}
 }
 
@@ -173,9 +184,9 @@ std::string Potatoes::generateKeywordRegEx()
 
 	for(int index = 0; index < NUM_KEYWORDS; index++)
 	{
-		regEx.append("(");
+		// regEx.append("(");
 		regEx.append(m_keywordLUT[index]);
-		regEx.append(")");
+		// regEx.append(")");
 
 		if(index < NUM_KEYWORDS-1)
 		{
