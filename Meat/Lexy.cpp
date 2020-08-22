@@ -322,7 +322,7 @@ bool Lexy::performArithmetic(TokenList& IOTokenList)
 
 		if(curIndex < endIndex)
 		{
-			IOTokenList.erase(leftIter, rightIter+1);
+			leftIter = IOTokenList.erase(leftIter, rightIter+1);
 
 			// std::cout << "Result Token = ";
 
