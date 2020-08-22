@@ -336,6 +336,9 @@ ASALocalRun/
 # Local History for Visual Studio
 .localhistory/
 
+#Unix object files.
+.o
+
 # BeatPulse healthcheck temp database
 healthchecksdb
 CMakeFiles/cmake.check_cache
@@ -385,3 +388,4 @@ CMakeFiles/3.18.1/CompilerIdCXX/a.exe
 CMakeFiles/3.18.1/CompilerIdCXX/CMakeCXXCompilerId.cpp
 CMakeFiles/JILInterpreter.dir/objects.a
 CMakeFiles/Progress/5
+JILInterpreter
