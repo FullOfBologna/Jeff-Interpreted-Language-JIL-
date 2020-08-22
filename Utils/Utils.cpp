@@ -72,3 +72,23 @@ std::string getValue(Token token)
 	return std::get<1>(token);
 }
 
+void printTokenList(TokenList& tokenList)
+{
+	for(auto token : tokenList)
+	{
+		printToken(token);
+	}
+}
+
+void printToken(Token token)
+{
+	Name name = std::get<0>(token);
+	std::string value = std::get<1>(token);
+
+	std::cout << "Token Name: " << name << ", Value: " << value << '\n';
+}
+
+void print(const char* inputString)
+{
+	std::cout << inputString << '\n';
+}
