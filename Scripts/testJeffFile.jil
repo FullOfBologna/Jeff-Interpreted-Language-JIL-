@@ -1,5 +1,12 @@
 print("Hello World")
 
+do(foo)
+
+if(!isEqual)
+
+while(a < b)
+
+end
 x =10+20-5
 y=x+2
 
