@@ -12,11 +12,11 @@ to start contributing to an open source project.
 This project is built using CMake. I will add in build details shortly, but I am currently developing this on both MacOS, and Windows. There will be some pains getting your build environment set up
 however I will eventually put some installation and build instructions up. 
 
+## Community
+[Join the Discord Server!]https://discord.gg/Mx4HkVw This is going to be the main communication area for discussions, as development moves forward. 
+
 ## Dev Tasks
 Current Development tasks can be found [at the Trello Board](https://trello.com/b/UHF9wIE2/jil-dev)
-
-The Discord is going to be built up as well, in hopes of boosting the community engagement. I first need to actually get contributors first! There are many opporunities for contributing, so just message me on here!
-
 
 # Current Functionality and progress
 While working on parsing keywords, Arithmetic operations are currently broken. Will fix shortly!
