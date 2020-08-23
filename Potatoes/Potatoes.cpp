@@ -10,6 +10,7 @@ Potatoes::Potatoes()
 {
 
 	initializeOperatorList();
+	print("Done building regex.");
 }
 
 Potatoes::~Potatoes()
@@ -22,8 +23,6 @@ void Potatoes::setLine(std::string& line)
 	m_currentLineString = line;
 }
 
-//TODO: Creating a more sophisticated parser. 
-
 TokenList Potatoes::parseLine()
 {
 	std::vector<std::string> parsedStringList;
@@ -33,7 +32,21 @@ TokenList Potatoes::parseLine()
 
 	int pos = -1;
 
-	pos = positionMatch(m_currentLineString, m_operatorList[0]);
+	print("Before regex matching.");
+
+	//Search line for keyWords first. 
+
+	parseForKeyword(parsedStringList);
+
+	for(int i = 0; i < parsedStringList.size(); i++)
+	{
+		std::cout << parsedStringList[i] << '\n';
+	}
+
+	pos = -1;
+
+	//Match Arithmetic Operators
+	pos = positionMatch(m_currentLineString, m_operatorList[1]);
 
 	std::vector<std::string> outputStringList;
 
@@ -44,12 +57,12 @@ TokenList Potatoes::parseLine()
 
 	splitString(outputStringList, m_currentLineString, pos);	
 
-	// std::cout << "Output String List = {";
-	// for(auto outputString : outputStringList)
-	// {
-	// 	std::cout << outputString << ",";
-	// }
-	// std::cout << "}" << std::endl;
+	std::cout << "Output String List = {";
+	for(auto outputString : outputStringList)
+	{
+		std::cout << outputString << ",";
+	}
+	std::cout << "}" << std::endl;
 
 	for (auto& str : outputStringList)
 	{
@@ -65,7 +78,41 @@ TokenList Potatoes::parseLine()
 	return tokenList;
 }
 
+void Potatoes::parseForKeyword(std::vector<std::string>& outputStringList)
+{
+	//positionMatch method does not work for this, as we are not matching single character literals for the keywords. 
 
+	std::string regExString = m_operatorList[0];
+
+	std::regex rExp(regExString);
+
+	std::smatch m;
+
+	//m will contain an index for the full string, plus all capture groups. 
+	// If the capture group contains a match, it will have a string value in it. 
+	// Thus it is valid to 
+
+	std::regex_search(m_currentLineString, m, rExp);
+
+	// Check the size of the matches. Specifically the sub matches. 
+
+	// std::cout << "Number of Groups to match = " << m.size() << '\n';
+
+	int numMatches = 0;
+	//Skip 0 because that is the full match. 
+	for(int i = 1; i < m.size(); i++)
+	{
+		if(m[i] != "")
+		{
+			// std::cout << "Match " << i << ": ";
+			// std::cout << m[i] << '\n';
+			outputStringList.push_back(m[i]);
+			numMatches++;
+		}
+	}
+}
+
+// void Potatoes::splitArithmeticOperators()
 
 int Potatoes::positionMatch(std::string& inputString,std::string inputOper)
 {
@@ -87,7 +134,7 @@ int Potatoes::positionMatch(std::string& inputString,std::string inputOper)
 	else
 	{
 		position = m.position(0);
-
+		std::cout << "Full Match: " << m[0] << '\n';
 		return position;
 	}
 
@@ -97,27 +144,39 @@ void Potatoes::initializeOperatorList()
 {
 	if(!m_isInitialized)
 	{
-		// = sign is the highest priority.
-		m_operatorList.push_back("\=");
-
-		//Place Brackets here once ready to implement
-
-		//Add arithmetic Operators
-		m_operatorList.push_back("[\+\-\/\*\%\^]");
-
-		//EmptyBrackets with nothing in the middle indicates a new list. 
-
-		m_operatorList.push_back("\{\}");
-
+		
 		std::string regExKeyWordString = generateKeywordRegEx();
 
 		print(regExKeyWordString.c_str());
 
 		m_operatorList.push_back(regExKeyWordString);
 
+		// = sign is the highest priority after keywords.
+		m_operatorList.push_back("\\=");
+
+		//Place Brackets here once ready to implement
+
+		//Add arithmetic Operators
+		m_operatorList.push_back("[\\+\\-\\/\\*\\%\\^]");
+
+		//EmptyBrackets with nothing in the middle indicates a new list. 
+
+		//m_operatorList.push_back("\{\}");
+
 		m_isInitialized = true;
 	}
 }
+
+//Example Keyword regex generated from this method is:
+//
+//	(?:[\s]|^)((print)|(do)|(while))\((.*)\)(?=[\s]|$)
+//
+//	Refer to this example for what the regex is matching. https://regex101.com/r/uRWvgx/5
+//
+//	Current limitation is even keywords like break will require parenthesis
+// 		which is like syntactic salt not sugar :(
+//
+//	Uses the keyword Look up table to generate the regex to match. 
 
 std::string Potatoes::generateKeywordRegEx()
 {
@@ -125,14 +184,16 @@ std::string Potatoes::generateKeywordRegEx()
 
 	for(int index = 0; index < NUM_KEYWORDS; index++)
 	{
+		// regEx.append("(");
 		regEx.append(m_keywordLUT[index]);
+		// regEx.append(")");
+
 		if(index < NUM_KEYWORDS-1)
 		{
 			regEx.append("|");
 		}
 	}
-
-	regEx.append(")(?=[\s]|$)");
+	regEx.append(")\\((.*)\\)(?=[\s]|$)");
 
 	return regEx;
 }
@@ -152,14 +213,16 @@ void Potatoes::splitString(std::vector<std::string>& outputStringList, std::stri
 
 	//Manage the priority operator calls. 
 
-	if(m_operatorIterator >= 1)
+	if(m_operatorIterator >= 2)
 	{
-		m_operatorIterator = 1;
+		m_operatorIterator = 2;
 	}
 	else
 	{
 		m_operatorIterator++;
 	}
+
+	std::cout << m_operatorIterator << '\n';
 
 	std::string opString;
 

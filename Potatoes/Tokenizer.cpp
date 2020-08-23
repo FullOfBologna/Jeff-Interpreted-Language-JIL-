@@ -70,7 +70,8 @@ TokenNameArray Tokenizer::initializeTokenArray()
 	newTokenArray[5] = "MULT";
 	newTokenArray[6] = "DIV";
 	newTokenArray[7] = "KEYWD";
-	newTokenArray[8] = "ERROR";
+	newTokenArray[8] = "ARG";
+	newTokenArray[9] = "ERROR";
 
 	return newTokenArray;
 }

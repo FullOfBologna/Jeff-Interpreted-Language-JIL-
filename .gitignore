@@ -336,6 +336,18 @@ ASALocalRun/
 # Local History for Visual Studio
 .localhistory/
 
+#Unix object files.
+.o
+
+.cmake
+
+.bin
+
+#Ignore cmake artifacts
+BuildScripts/Unix/CMakeFiles/
+BuildScripts/VisualStudio2019/CMakeFiles/
+BuildScripts/MinGW/CMakeFiles/
+
 # BeatPulse healthcheck temp database
 healthchecksdb
 
@@ -444,3 +456,5 @@ BuildScripts/MinGW/CMakeFiles/Progress/3
 BuildScripts/MinGW/CMakeFiles/Progress/4
 BuildScripts/MinGW/CMakeFiles/Progress/count.txt
 BuildScripts/MinGW/CMakeFiles/JILInterpreter.dir/objects.a
+JILInterpreter
+
