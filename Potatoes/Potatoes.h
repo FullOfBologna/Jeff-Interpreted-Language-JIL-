@@ -33,9 +33,13 @@ private:
 
 	void initializeOperatorList();
 
+	void parseForKeyword(std::vector<std::string>& outputStringList);
+
 	int positionMatch(std::string& inputString, std::string inputOper);
 	void splitString(std::vector<std::string>& outputStringList, std::string& inputString, int);
 
 	std::string generateKeywordRegEx();
+
+
 };
 
