@@ -13,7 +13,7 @@ This project is built using CMake. I will add in build details shortly, but I am
 however I will eventually put some installation and build instructions up. 
 
 ## Community
-[Join the Discord Server!]https://discord.gg/Mx4HkVw This is going to be the main communication area for discussions, as development moves forward. 
+[Join the Discord Server!](https://discord.gg/Mx4HkVw) This is going to be the main communication area for discussions, as development moves forward. 
 
 ## Dev Tasks
 Current Development tasks can be found [at the Trello Board](https://trello.com/b/UHF9wIE2/jil-dev)
