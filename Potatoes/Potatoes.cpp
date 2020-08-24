@@ -38,6 +38,8 @@ TokenList Potatoes::parseLine()
 
 	parseForKeyword(parsedStringList);
 
+	std::cout << "PRINT PARSED STRING LIST" << std::endl;
+
 	for(int i = 0; i < parsedStringList.size(); i++)
 	{
 		std::cout << parsedStringList[i] << '\n';
@@ -45,17 +47,29 @@ TokenList Potatoes::parseLine()
 
 	pos = -1;
 
+	std::string stringToSplit = "";
+	if(!parsedStringList.empty())
+	{
+		stringToSplit = parsedStringList[1];
+	}
+	else
+	{
+		stringToSplit = m_currentLineString;
+	}
+	
+	std::cout << "stringToSplit = " << stringToSplit << '\n';
+
 	//Match Arithmetic Operators
-	pos = positionMatch(m_currentLineString, m_operatorList[1]);
+	pos = positionMatch(stringToSplit, m_operatorList[1]);
 
 	std::vector<std::string> outputStringList;
 
-	if(m_currentLineString.size() < 1)
+	if(stringToSplit.size() < 1)
 	{
 		return tokenList;
 	}
 
-	splitString(outputStringList, m_currentLineString, pos);	
+	splitString(outputStringList, stringToSplit, pos);	
 
 	std::cout << "Output String List = {";
 	for(auto outputString : outputStringList)
@@ -95,7 +109,6 @@ void Potatoes::parseForKeyword(std::vector<std::string>& outputStringList)
 	std::regex_search(m_currentLineString, m, rExp);
 
 	// Check the size of the matches. Specifically the sub matches. 
-
 	// std::cout << "Number of Groups to match = " << m.size() << '\n';
 
 	int numMatches = 0;
@@ -202,14 +215,30 @@ void Potatoes::splitString(std::vector<std::string>& outputStringList, std::stri
 {
 
 	// std::cout << "inputString: " << inputString << std::endl;
+	// std::cout << "inputPos = " << inputPos << '\n';
+	
+	
+	std::string leftSideString; 
+	std::string rightSideString;
+	
+	if(inputPos == -1)
+	{		
+		leftSideString = "";
+		rightSideString = inputString;
 
-	std::string leftSideString = inputString.substr(0,inputPos);
-	std::string rightSideString = inputString.substr(inputPos+1, inputString.size()-1);
+		outputStringList.push_back(rightSideString);
 
-	// std::cout << leftSideString << "      " << rightSideString << std::endl; 
+	}
+	else
+	{
+		leftSideString = inputString.substr(0,inputPos);
+		rightSideString = inputString.substr(inputPos+1, inputString.size()-1);
 
-	outputStringList.push_back(leftSideString);
-	outputStringList.push_back(inputString.substr(inputPos,1));
+		outputStringList.push_back(leftSideString);
+		outputStringList.push_back(inputString.substr(inputPos,1));
+	}
+	
+	std::cout << leftSideString << "      " << rightSideString << std::endl; 
 
 	//Manage the priority operator calls. 
 
@@ -226,6 +255,8 @@ void Potatoes::splitString(std::vector<std::string>& outputStringList, std::stri
 
 	std::string opString;
 
+	std::cout << rightSideString << '\n';
+	
 	int pos = positionMatch(rightSideString,m_operatorList[m_operatorIterator]);
 	// std::cout << "pos = " << pos << std::endl;
 

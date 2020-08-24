@@ -1,5 +1,7 @@
 print("Hello World")
 
+if(3+10)
+
 do(foo)
 
 if(!isEqual)
