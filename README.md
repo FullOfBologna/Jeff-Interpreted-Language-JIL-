@@ -40,14 +40,23 @@ CMake must be installed. If building on Windows, There are two possible routes, 
 >cd BuildScripts/VisualStudio2019
 >.\BuildVSProject.bat
 ```
-This will place a .sln in the BuildScripts/VisualStudio2019 folder. By opening this file in Visual Studio, the project can be built, placing the executable file in BuildScripts/VisualStudio2019/Debug. 
+
+This will place a .sln in the BuildScripts/VisualStudio2019 folder. By opening this file in Visual Studio, the project can be built, placing the executable file in BuildScripts/VisualStudio2019/Debug. When the project has been built, the interpreter can be used
+
+```
+>cd Debug
+>.\JILInterpreter.exe \PATH\TO\testJILFile.jil
+```
 
 Building with an older VS should be easy by modifying the ```BuildVSProject.bat``` file your version. This should be modified so the project can be built by more users. 
 
+### Building on Mac
+The project can be built using the scripts in the "BuildScripts/Unix" folder.
+
 ### Building on Unix
-
-This project can also be built using Unix using a script found in BuildScripts.
-
-### Usage when Compiled
-```> .\JILInterpreter.exe \PATH\TO\testJILFile.jil```
- 
+In order to build on Unix both cmake and g++ need to be installed. The project can be used by running
+```
+>cd BuildScripts/Unix
+>./BuildUnix.sh
+>./JILInterpreter /PATH/TO/testJILFile.jil
+```
