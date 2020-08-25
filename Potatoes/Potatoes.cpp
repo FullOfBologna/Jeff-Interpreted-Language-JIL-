@@ -53,7 +53,7 @@ TokenList Potatoes::parseLine()
 		outputStringList.clear();
 		std::string stringToSplit = m_currentLineString;
 
-		std::cout << "stringToSplit = " << stringToSplit << '\n';
+		// std::cout << "stringToSplit = " << stringToSplit << '\n';
 
 		//Match Arithmetic Operators
 		pos = positionMatch(stringToSplit, m_operatorList[1]);

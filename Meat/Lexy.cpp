@@ -77,7 +77,13 @@ void Lexy::printStoredVariables()
 bool Lexy::newExecutor(TokenList inputTokenList)
 {
 
-	if(!performArithmetic(inputTokenList))
+	//Separate Keyword and argument logic from the arithmetic.
+
+	if(performKeywordAnalysis(inputTokenList))
+	{
+
+	} 
+	else if(!performArithmetic(inputTokenList))
 	{
 		std::cout << "ERROR: Error performing arithmetic." << '\n';
 		return false;
@@ -89,6 +95,27 @@ bool Lexy::newExecutor(TokenList inputTokenList)
 
 	return true;
 
+}
+
+//Work on the keywords
+bool Lexy::performKeywordAnalysis(TokenList& inputTokenList)
+{
+	//Create a keyword handler object, which has the functions definitions. 
+	KeywordHandler keyWordhandler;
+
+	auto tokenListSize = inputTokenList.size();
+
+	for(int tokenIt = 0; tokenIt < tokenListSize; tokenIt++)
+	{
+		std::string keywordValue = "";
+
+		if(getName(inputTokenList[tokenIt]) == "KEYWD")
+		{
+			keywordValue = getValue(inputTokenList[0]);
+		}
+	}
+
+	return true;
 }
 
 bool Lexy::performLogic(TokenList& inputTokenList)

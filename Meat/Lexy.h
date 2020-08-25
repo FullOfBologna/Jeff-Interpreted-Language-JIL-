@@ -2,6 +2,8 @@
 // Lexical Analyzer to execute a received Token List. 
 
 #include "../Utils/CommonIncludes.h"
+#include "KeywordHandler.h"
+
 #include <sstream>
 #include <iostream>
 #include <map>
@@ -20,6 +22,7 @@ public:
 private:
 	std::map<std::string,float> m_storedVariables;
 	TokenList m_inputTokenList;
+	KeywordHandler m_keywordHandler;
 
 	enum Instructions
 	{
@@ -56,6 +59,7 @@ private:
 
 	bool checkIfStored(std::string& var);
 
+	bool performKeywordAnalysis(TokenList& IOTokenList);
 	bool performArithmetic(TokenList& IOTokenList);
 	bool performLogic(TokenList& inputTokenList);
 };
