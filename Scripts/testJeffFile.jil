@@ -1,6 +1,6 @@
 print("Hello World")
 
-if(3+10)
+if(conditionalCheck)
 
 do(foo)
 

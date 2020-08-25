@@ -23,9 +23,15 @@ void Potatoes::setLine(std::string& line)
 	m_currentLineString = line;
 }
 
+// Check if there are any arithmetic operators 
+// WARNING: INCOMING BAD DESIGN DECISION
+//	- Operators are not allowed on the same line as the keyword. For now. 
+//	- This should speed up development of the parser.
+
 TokenList Potatoes::parseLine()
 {
 	std::vector<std::string> parsedStringList;
+	std::vector<std::string> outputStringList;
 	TokenList tokenList;
 
 	std::string tempString = "";
@@ -36,40 +42,29 @@ TokenList Potatoes::parseLine()
 
 	//Search line for keyWords first. 
 
-	parseForKeyword(parsedStringList);
+	bool containsKeyword = false;
+
+	containsKeyword = parseForKeyword(outputStringList);
 
 	std::cout << "PRINT PARSED STRING LIST" << std::endl;
 
-	for(int i = 0; i < parsedStringList.size(); i++)
+	if(!containsKeyword)
 	{
-		std::cout << parsedStringList[i] << '\n';
+		outputStringList.clear();
+		std::string stringToSplit = m_currentLineString;
+
+		std::cout << "stringToSplit = " << stringToSplit << '\n';
+
+		//Match Arithmetic Operators
+		pos = positionMatch(stringToSplit, m_operatorList[1]);
+
+		if(stringToSplit.size() < 1)
+		{
+			return tokenList;
+		}
+
+		splitString(outputStringList, stringToSplit, pos);	
 	}
-
-	pos = -1;
-
-	std::string stringToSplit = "";
-	if(!parsedStringList.empty())
-	{
-		stringToSplit = parsedStringList[1];
-	}
-	else
-	{
-		stringToSplit = m_currentLineString;
-	}
-	
-	std::cout << "stringToSplit = " << stringToSplit << '\n';
-
-	//Match Arithmetic Operators
-	pos = positionMatch(stringToSplit, m_operatorList[1]);
-
-	std::vector<std::string> outputStringList;
-
-	if(stringToSplit.size() < 1)
-	{
-		return tokenList;
-	}
-
-	splitString(outputStringList, stringToSplit, pos);	
 
 	std::cout << "Output String List = {";
 	for(auto outputString : outputStringList)
@@ -77,14 +72,28 @@ TokenList Potatoes::parseLine()
 		std::cout << outputString << ",";
 	}
 	std::cout << "}" << std::endl;
+	
+	bool isArg = false;
 
 	for (auto& str : outputStringList)
 	{
 		Token token;
 
-		token = m_tokenizer.generateToken(str);
+		token = m_tokenizer.generateToken(str, isArg);
 
+		Name tokenName = getName(token);
 		// std::cout << "Token = {" << getName(token) << ", " << getValue(token) << "}" << std::endl;
+
+		//Set the isArg flag so the next token that comes after the keyword is an argument. 
+		if(tokenName == "KEYWD")
+		{
+			isArg = true;
+		}
+		else
+		{
+			isArg = false;
+		}
+		
 
 		tokenList.push_back(token);
 	}
@@ -92,7 +101,7 @@ TokenList Potatoes::parseLine()
 	return tokenList;
 }
 
-void Potatoes::parseForKeyword(std::vector<std::string>& outputStringList)
+bool Potatoes::parseForKeyword(std::vector<std::string>& outputStringList)
 {
 	//positionMatch method does not work for this, as we are not matching single character literals for the keywords. 
 
@@ -123,6 +132,15 @@ void Potatoes::parseForKeyword(std::vector<std::string>& outputStringList)
 			numMatches++;
 		}
 	}
+
+	if(m.empty())
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
 }
 
 // void Potatoes::splitArithmeticOperators()
@@ -147,7 +165,6 @@ int Potatoes::positionMatch(std::string& inputString,std::string inputOper)
 	else
 	{
 		position = m.position(0);
-		std::cout << "Full Match: " << m[0] << '\n';
 		return position;
 	}
 
@@ -238,7 +255,7 @@ void Potatoes::splitString(std::vector<std::string>& outputStringList, std::stri
 		outputStringList.push_back(inputString.substr(inputPos,1));
 	}
 	
-	std::cout << leftSideString << "      " << rightSideString << std::endl; 
+	// std::cout << leftSideString << "      " << rightSideString << std::endl; 
 
 	//Manage the priority operator calls. 
 
@@ -251,11 +268,11 @@ void Potatoes::splitString(std::vector<std::string>& outputStringList, std::stri
 		m_operatorIterator++;
 	}
 
-	std::cout << m_operatorIterator << '\n';
+	// std::cout << m_operatorIterator << '\n';
 
 	std::string opString;
 
-	std::cout << rightSideString << '\n';
+	// std::cout << rightSideString << '\n';
 	
 	int pos = positionMatch(rightSideString,m_operatorList[m_operatorIterator]);
 	// std::cout << "pos = " << pos << std::endl;
@@ -266,6 +283,7 @@ void Potatoes::splitString(std::vector<std::string>& outputStringList, std::stri
 	}
 	else
 	{
+		//Need a better state handler for if there are no arithmetic operators. 
 		outputStringList.push_back(rightSideString);
 		return;
 	}
