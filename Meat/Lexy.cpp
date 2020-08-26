@@ -101,7 +101,6 @@ bool Lexy::newExecutor(TokenList inputTokenList)
 bool Lexy::performKeywordAnalysis(TokenList& inputTokenList)
 {
 	//Create a keyword handler object, which has the functions definitions. 
-	KeywordHandler keyWordhandler;
 
 	auto tokenListSize = inputTokenList.size();
 
