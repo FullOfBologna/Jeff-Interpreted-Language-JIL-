@@ -2,7 +2,8 @@
 
 Lexy::Lexy() : 
 	m_storedVariables{},
-	m_inputTokenList{}
+	m_inputTokenList{},
+	m_keywordHandler(/*Need to get keywordLUT in*/)
 {
 
 }
