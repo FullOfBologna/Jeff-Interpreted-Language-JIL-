@@ -2,8 +2,19 @@
 //
 
 #include <iostream>
+#include <cstdio>
 
 #include "Meat/Meat.h"
+
+//**** Used in the print function to determine line and file ****//
+#define STRX(x) #x
+#define TOSTRING(x) STRX(x)
+#define info __FILE__ ": " TOSTRING(__LINE__)   // info contains the information of the file and line
+void print(const char* locationInfo, std::string msg)
+{
+    const char* c = msg.c_str();
+    printf("%s: %s\n", locationInfo, c);
+}
 
 void printUsage()
 {
@@ -12,6 +23,7 @@ void printUsage()
 
 int main(int argc, char *argv[])
 {
+    print(info, "test");
     if (argc != 2)
     {
         printUsage();
