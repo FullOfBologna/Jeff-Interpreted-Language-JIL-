@@ -106,6 +106,8 @@ bool Lexy::performKeywordAnalysis(TokenList& inputTokenList)
 	auto tokenListSize = inputTokenList.size();
 
 	m_keywordHandler.setStoredVariables(m_storedVariables);
+
+	bool keywordFound = false;
 	for(int tokenIt = 0; tokenIt < tokenListSize; tokenIt++)
 	{
 		std::string keywordValue = "";
@@ -114,6 +116,7 @@ bool Lexy::performKeywordAnalysis(TokenList& inputTokenList)
 		{
 			keywordValue = getValue(inputTokenList[tokenIt]);
 			m_keywordHandler.setKeyword(keywordValue);
+			keywordFound = true;
 		}
 
 		if(getName(inputTokenList[tokenIt]) == "ARG")
@@ -125,14 +128,14 @@ bool Lexy::performKeywordAnalysis(TokenList& inputTokenList)
 
 	m_keywordHandler.executeKeyword();
 
-	return true;
+	return keywordFound;
 }
 
 bool Lexy::performLogic(TokenList& inputTokenList)
 {
 	// print("Analyzing Input Token List");
 
-	printTokenList(inputTokenList);
+	// printTokenList(inputTokenList);
 
 	int listSize = inputTokenList.size();
 	for(int index = 0; index < listSize; index++)
@@ -176,7 +179,7 @@ bool Lexy::performLogic(TokenList& inputTokenList)
 			}
 			else if(rightName == "NAME")
 			{
-				print("Storing variable into another variable.");
+				// print("Storing variable into another variable.");
 
 				if(isStored(rightValue))
 				{
@@ -363,7 +366,7 @@ bool Lexy::performArithmetic(TokenList& IOTokenList)
 
 			// std::cout << "Result Token = ";
 
-			printToken(resultToken);
+			// printToken(resultToken);
 
 			IOTokenList.insert(leftIter, resultToken);
 

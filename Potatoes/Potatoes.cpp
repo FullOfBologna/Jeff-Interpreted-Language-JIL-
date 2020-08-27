@@ -5,12 +5,12 @@ Potatoes::Potatoes()
 	m_currentLineString(""),
 	m_keywordLUT(m_tokenizer.getKeywordArray()),
 	m_isInitialized(false),
-	m_operatorIterator(0),
+	m_operatorIterator(1),
 	m_operatorList{}	
 {
 
 	initializeOperatorList();
-	print("Done building regex.");
+	// print("Done building regex.");
 }
 
 Potatoes::~Potatoes()
@@ -43,15 +43,15 @@ TokenList Potatoes::parseLine()
 
 	int pos = -1;
 
-	print("Before regex matching.");
+	// print("Before regex matching.");
 
 	//Search line for keyWords first. 
 
 	bool containsKeyword = false;
 
 	containsKeyword = parseForKeyword(outputStringList);
-
-	std::cout << "PRINT PARSED STRING LIST" << std::endl;
+	// std::cout << "Contains Keyword = " << containsKeyword << std::endl;
+	// std::cout << "PRINT PARSED STRING LIST" << std::endl;
 
 	if(!containsKeyword)
 	{
@@ -68,15 +68,17 @@ TokenList Potatoes::parseLine()
 			return tokenList;
 		}
 
+		// std::cout << "pos = " << pos << std::endl;
+
 		splitString(outputStringList, stringToSplit, pos);	
 	}
 
-	std::cout << "Output String List = {";
-	for(auto outputString : outputStringList)
-	{
-		std::cout << outputString << ",";
-	}
-	std::cout << "}" << std::endl;
+	// // std::cout << "Output String List = {";
+	// for(auto outputString : outputStringList)
+	// {
+	// 	std::cout << outputString << ",";
+	// }
+	// std::cout << "}" << std::endl;
 	
 	bool isArg = false;
 
@@ -182,7 +184,7 @@ void Potatoes::initializeOperatorList()
 		
 		std::string regExKeyWordString = generateKeywordRegEx();
 
-		print(regExKeyWordString.c_str());
+		// print(regExKeyWordString.c_str());
 
 		m_operatorList.push_back(regExKeyWordString);
 
@@ -262,7 +264,9 @@ void Potatoes::splitString(std::vector<std::string>& outputStringList, std::stri
 	
 	// std::cout << leftSideString << "      " << rightSideString << std::endl; 
 
-	//Manage the priority operator calls. 
+	//Manage the priority operator calls.
+
+	// std::cout << "Operator Iterator Before change = " << m_operatorIterator << '\n';
 
 	if(m_operatorIterator >= 2)
 	{
@@ -273,7 +277,7 @@ void Potatoes::splitString(std::vector<std::string>& outputStringList, std::stri
 		m_operatorIterator++;
 	}
 
-	// std::cout << m_operatorIterator << '\n';
+	// std::cout << "Operator Iterator = " << m_operatorIterator << '\n';
 
 	std::string opString;
 
