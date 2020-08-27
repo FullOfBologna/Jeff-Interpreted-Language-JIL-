@@ -26,11 +26,23 @@ VariableNames can be placed on the left hand side of an "=" operator, in order t
 ## Example
 ### Valid ```.jil``` File at this point. 
 ```
- x=20+1-4/2
- y=x*2
- c = y*x
+x = 10+20-5
+y = x*2
+
+print("Hello World: x = " + x)
+print("y = " + y)
 ```
- 
+
+### Expected output of above example
+```
+Input filename:..\..\Scripts\testJeffFile.jil
+HelloWorld:x= 25
+HelloWorld:x= 25
+y= 50
+y= 50
+```
+There are bugs in the output, but the key is that print() is supported now. 
+
 So far, white space in the lines is not a problem, spaces are stripped out by the Tokenzier. 
 
 ### Building on Windows
