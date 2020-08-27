@@ -2,6 +2,7 @@
 
 #include "../Utils/CommonIncludes.h"
 #include <map>
+#include <regex>
 
 class KeywordHandler
 {
@@ -35,4 +36,7 @@ private:
     ////////
     //  Break function will set the current line to one past the while function. 
     // void breakHandler();
+
+  	bool isStored(std::string& var);
+    void getMapValue(float&, std::string variableName);
 };

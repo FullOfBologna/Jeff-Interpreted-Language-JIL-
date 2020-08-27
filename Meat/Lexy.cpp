@@ -1,9 +1,9 @@
 #include "Lexy.h"
 
-Lexy::Lexy() : 
+Lexy::Lexy(KeyWordArray keywordLUT) : 
 	m_storedVariables{},
 	m_inputTokenList{},
-	m_keywordHandler(/*Need to get keywordLUT in*/)
+	m_keywordHandler(keywordLUT)
 {
 
 }
@@ -92,7 +92,7 @@ bool Lexy::newExecutor(TokenList inputTokenList)
 
 	performLogic(inputTokenList);
 
-	printStoredVariables();		
+	// printStoredVariables();		
 
 	return true;
 
@@ -105,15 +105,25 @@ bool Lexy::performKeywordAnalysis(TokenList& inputTokenList)
 
 	auto tokenListSize = inputTokenList.size();
 
+	m_keywordHandler.setStoredVariables(m_storedVariables);
 	for(int tokenIt = 0; tokenIt < tokenListSize; tokenIt++)
 	{
 		std::string keywordValue = "";
-
+		std::string argValue = "";
 		if(getName(inputTokenList[tokenIt]) == "KEYWD")
 		{
-			keywordValue = getValue(inputTokenList[0]);
+			keywordValue = getValue(inputTokenList[tokenIt]);
+			m_keywordHandler.setKeyword(keywordValue);
+		}
+
+		if(getName(inputTokenList[tokenIt]) == "ARG")
+		{
+			argValue = getValue(inputTokenList[tokenIt]);
+			m_keywordHandler.setArg(argValue);
 		}
 	}
+
+	m_keywordHandler.executeKeyword();
 
 	return true;
 }
@@ -429,7 +439,7 @@ bool Lexy::executeAnalyzedInstructions(TokenList inputTokenList) {
 
 			updateMapValue(variableName, variableFloat);
 
-			printStoredVariables();
+			// printStoredVariables();
 			std::cout << std::endl;
 		}
 		else if (name == "NUMBER")

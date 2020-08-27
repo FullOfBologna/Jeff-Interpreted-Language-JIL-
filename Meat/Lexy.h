@@ -12,7 +12,7 @@
 class Lexy
 {
 public:
-	Lexy();
+	Lexy(KeyWordArray keywLUT);
 	~Lexy();
 
 	//Do I break the token down into a list of executable functions with proper 

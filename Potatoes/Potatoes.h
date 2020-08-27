@@ -16,6 +16,8 @@ public:
 
 	TokenList parseLine();
 
+	KeyWordArray getKeywordLUT();
+
 private:
 
 	Tokenizer m_tokenizer;	

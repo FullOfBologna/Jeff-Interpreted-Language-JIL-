@@ -4,7 +4,7 @@ Meat::Meat():
 	m_file(nullptr),
 	m_output(""),
 	m_potatoes(Potatoes()),
-	m_lexy(Lexy())
+	m_lexy(Lexy(m_potatoes.getKeywordLUT()))
 {
 
 }

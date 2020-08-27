@@ -1,16 +1,3 @@
-print("Hello World")
-
-if(conditionalCheck)
-
-do(foo)
-
-if(!isEqual)
-
-while(a < b)
-
-end
 x =10+20-5
-y=x+2
 
-
-c= y*x
+print("Hello World" + x)

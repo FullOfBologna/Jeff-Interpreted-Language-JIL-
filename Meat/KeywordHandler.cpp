@@ -42,9 +42,48 @@ void KeywordHandler::executeKeyword()
 
 void KeywordHandler::printFunction(std::string inputString)
 {
-    std::cout << "print() called. " << '\n';
-    std::cout << inputString << '\n';
+    //Compare Input string with stored variables. 
+
     //Interpret the string. 
     // for stored variables, check if the name exists, check if 
+
+    //Have a regEx that splits the input string into the quoted string, and the 
+
+    std::string regExString = "\"(.*)\"\\s*\\+\\s*(.*)";
+    std::regex rExp(regExString);
+
+    std::smatch m;
+
+	std::regex_search(inputString, m, rExp);
+
+    for(int i = 1; i < m.size(); i++)
+    {
+        std::string var = m[i].str();
+        if(isStored(var))
+        {
+            float varValue;
+            getMapValue(varValue, var);
+            // std::cout << "Found stored Variable: " << m[i] << ": " << varValue << '\n';
+            std::cout << varValue ;
+        }
+        else
+        {
+            std::cout << m[i] << " ";
+        }
+    }
+
+    std::cout << '\n';
 }
 
+bool KeywordHandler::isStored(std::string& varName)
+{
+	auto iterator = m_storedVariables.find(varName);
+	if (iterator == m_storedVariables.end())
+		return false;
+	return true;
+}
+
+void KeywordHandler::getMapValue(float& outputFloat, std::string variableName)
+{
+	outputFloat = m_storedVariables.find(variableName)->second;
+}

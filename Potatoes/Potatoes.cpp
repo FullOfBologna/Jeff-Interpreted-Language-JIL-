@@ -18,6 +18,11 @@ Potatoes::~Potatoes()
 
 }
 
+KeyWordArray Potatoes::getKeywordLUT()
+{
+	return m_keywordLUT;
+}
+
 void Potatoes::setLine(std::string& line)
 {
 	m_currentLineString = line;
