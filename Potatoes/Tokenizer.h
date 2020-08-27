@@ -12,7 +12,7 @@ public:
 	Tokenizer();
 	~Tokenizer();
 
-	Token generateToken(std::string input);
+	Token generateToken(std::string input, bool isArg);
 
 	KeyWordArray getKeywordArray();
 

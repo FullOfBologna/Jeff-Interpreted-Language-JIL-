@@ -13,16 +13,25 @@ Tokenizer::~Tokenizer()
 
 }
 
-Token Tokenizer::generateToken(std::string input)
+Token Tokenizer::generateToken(std::string input, bool isArgument)
 {
 	Token token;
 	//Parse only number first, so it does not get stored as a variable
 
 	stripSpaces(input);
 
-	std::cout << "{" << input << "}" << std::endl;
+	// std::cout << "{" << input << "}" << std::endl;
 
-	if (isNumber(input))
+	auto iter = std::find(m_keywordLUT.begin(), m_keywordLUT.end(),input);
+
+	if (iter != m_keywordLUT.end())
+	{
+		token = std::make_tuple(m_tokenLUT[7], input);
+	}
+	else if(isArgument)
+	{
+		token = std::make_tuple(m_tokenLUT[8], input);
+	}else if (isNumber(input))
 	{
 		token = std::make_tuple(m_tokenLUT[2], input);
 	}

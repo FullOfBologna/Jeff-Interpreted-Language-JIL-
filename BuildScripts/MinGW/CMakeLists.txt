@@ -18,7 +18,8 @@ SET(SOURCES
     
     ${MEAT_DIR}/Meat.cpp
     ${MEAT_DIR}/Lexy.cpp
-    
+    ${MEAT_DIR}/KeywordHandler.cpp
+
     ${POTATOES_DIR}/Potatoes.cpp
     ${POTATOES_DIR}/Tokenizer.cpp
 
@@ -33,7 +34,8 @@ SET(HEADERS
 
     ${MEAT_DIR}/Meat.h
     ${MEAT_DIR}/Lexy.h 
-    
+    ${MEAT_DIR}/KeywordHandler.h
+
     ${POTATOES_DIR}/Potatoes.h 
     ${POTATOES_DIR}/Tokenizer.h 
 
