@@ -19,9 +19,8 @@ however I will eventually put some installation and build instructions up.
 Current Development tasks can be found [at the Trello Board](https://trello.com/b/UHF9wIE2/jil-dev)
 
 # Current Functionality and progress
-While working on parsing keywords, Arithmetic operations are currently broken. Will fix shortly!
+print() and arithmetic operations on variables are now supported! You can even print the variables values!
 
-~Wooo! Version 0.00000001 is done! JIL can now support arithmetic operations preserving order of operations for the four basic operators, MDAS (not the full PEMDAS yet)~
 VariableNames can be placed on the left hand side of an "=" operator, in order to store that variable. If the variable is stored, you can then use that variable on the right side of an "=" operator to use it in arithmetic.
 ## Example
 ### Valid ```.jil``` File at this point. 
